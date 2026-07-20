@@ -1,3 +1,6 @@
+import random
+
+
 def create_board():
     board = []
 
@@ -29,6 +32,18 @@ def display_board(board):
     print(" +-----+-----+-----+-----+")
     print()
 
+def randomLo():
+    shipLocation = []
+    for x in range(1):
+        shiprow = 0
+        shipcol = 0
+        shiprow = random.randint(1,4)
+        shipcol = random.randint(1,4)
+        shipLocation.append(shiprow)
+        shipLocation.append(shipcol)
+
+        
+
 def get_location():
     location = input("Enter location (Example A, 1): "
     ).upper().replace(" "," ")
@@ -46,4 +61,7 @@ def get_location():
         ).upper().replace(" "," ")
 
 if __name__=="__main__":
-    play_game =()
+    print ("---- Battle Ship 1.0 ----")
+    print ("")
+    display_board
+    

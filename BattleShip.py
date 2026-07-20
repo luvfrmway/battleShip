@@ -33,7 +33,7 @@ def display_board(board):
 
     return
 
-def convertLo (shipLocation, location):
+def convertLo (location):
     columnLetter = location[0]
     row = int(location[2]) - 1
 
@@ -48,7 +48,7 @@ def convertLo (shipLocation, location):
     return row, column
 
 
-def get_location(location):
+def checkLo (location):
     while True:
         if len(location) == 3:
             if location[0] in "ABCD":
@@ -63,6 +63,8 @@ def get_location(location):
         ).upper().replace(" "," ")
     
 
+    
+        
 
 if __name__=="__main__":
     print ("---- Battle Ship 1.0 ----")
@@ -85,5 +87,12 @@ if __name__=="__main__":
     while game:
         location = (input("Choose where you want to fire (Example A,1): "))
         locationList.append(location)
-        get_location(location)
+        checkLo (location)
+        row, col = convertLo(location)
         
+        if battleBoard[row][col] == "ship":
+            print ("you win")
+            game = False
+        else: 
+            battleBoard[row][col] = "x"
+            continue

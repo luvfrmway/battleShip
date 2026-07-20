@@ -80,9 +80,12 @@ if __name__=="__main__":
     shipcol = 0
     shiprow = random.randint(1,4)
     shipcol = random.randint(1,4)
+    shiplocation = []
+    shiplocation.append(shiprow-1)
+    shiplocation.append(shipcol-1)
 
-    if battleBoard[shipcol-1][shiprow-1] == " ":
-        battleBoard[shipcol-1][shiprow-1] = "ship"
+    # if battleBoard[shipcol-1][shiprow-1] == " ":
+    #     battleBoard[shipcol-1][shiprow-1] = "ship"
     
     while game:
         location = (input("Choose where you want to fire (Example A,1): "))
@@ -90,9 +93,9 @@ if __name__=="__main__":
         checkLo (location)
         row, col = convertLo(location)
         
-        if battleBoard[row][col] == "ship":
+        if [row,col] == shiplocation:
             print ("you win")
             game = False
         else: 
             battleBoard[row][col] = "x"
-            continue
+            display_board(battleBoard)

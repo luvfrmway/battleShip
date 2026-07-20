@@ -11,9 +11,8 @@ def create_board():
             board_row.append(" ")
 
         board.append(board_row)
-
     return board
-
+    
 def display_board(board):
     print()
     print("    A      B      C      D")
@@ -34,13 +33,20 @@ def display_board(board):
 
 def randomLo(board):
     shipLocation = []
-    for x in range(1):
-        shiprow = 0
-        shipcol = 0
-        shiprow = random.randint(1,4)
-        shipcol = random.randint(1,4)
-        shipLocation.append(shiprow)
-        shipLocation.append(shipcol)
+    shiprow = 0
+    shipcol = 0
+    shiprow = random.randint(1,4)
+    shipcol = random.randint(1,4)
+    shipLocation.append(shiprow)
+    shipLocation.append(shipcol)
+
+    if board[shipcol][shiprow] == "":
+        board[shipcol][shiprow].append("ship")
+    return
+
+def convertLo (shipLocation):
+    col = None
+
     
 
         
@@ -67,4 +73,6 @@ if __name__=="__main__":
     
     battleBoard= create_board()
     display_board(battleBoard)
-    get_location()
+    ship = randomLo
+    
+    print (battleBoard)

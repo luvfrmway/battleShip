@@ -3,26 +3,32 @@ import random
 
 def create_board():
     battleBoard = []
+    while True:
+        try: 
+            gridSize = int(input("Enter the size of your board. (Ex. 1-10): "))
+            break
+        except(ValueError):
+            print ("Invalid input, try again.")
 
-    for row in range(4):
+    for row in range(gridSize):
         board_row = []
 
-        for column in range(4):
+        for column in range(gridSize):
             board_row.append(" ")
 
         battleBoard.append(board_row)
     return battleBoard
     
-def display_board(board):
+def display_board(board, gridSize):
     print()
     print("    A      B      C      D")
 
-    for row in range(4):
+    for row in range(gridSize):
         print(" +-----+-----+-----+-----+")
 
         print(row +1, end=" ")
 
-        for column in range(4):
+        for column in range(gridSize):
             print("|", end="")
             print(f"{board[row][column]:^5}", end="")
 
@@ -67,6 +73,10 @@ def checkLo (location):
         
 
 if __name__=="__main__":
+    while True:
+        try:
+            
+    
     print ("---- Battle Ship 1.0 ----")
     print ("")
     

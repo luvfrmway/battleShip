@@ -36,7 +36,7 @@ def display_board(battleBoard, gridSize):
 
         print(row +1, end=" ")
 
-        for column in range(gridSize):
+        for column in range(4):
             print("|", end="")
             print(f"{battleBoard[row][column]:^5}", end="")
 
@@ -171,17 +171,17 @@ if __name__=="__main__":
     # if battleBoard[shipcol-1][shiprow-1] == " ":
     #     battleBoard[shipcol-1][shiprow-1] = "ship"
     
+    
+    gamecount = 0
     while game:
         location = (input("Choose where you want to fire (Example A,1): "))
         locationList.append(location)
         checkLo (location)
         row, col = convertLo(location)
         
-        for ship in (shiplocation):
-            if [row,col] == ship:
-                print ("you win")
-                game = False
-            else: 
-                battleBoard[row][col] = "x"
-                print ("Incorrect guess. Try again!")
-                display_board(battleBoard)
+        if [row,col] == shiplocation:
+            print ("you win")
+            game = False
+        else: 
+            battleBoard[row][col] = "x"
+            display_board(battleBoard)

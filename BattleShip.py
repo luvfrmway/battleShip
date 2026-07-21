@@ -3,32 +3,26 @@ import random
 
 def create_board():
     battleBoard = []
-    while True:
-        try: 
-            gridSize = int(input("Enter the size of your board. (Ex. 1-10): "))
-            break
-        except(ValueError):
-            print ("Invalid input, try again.")
 
-    for row in range(gridSize):
+    for row in range(4):
         board_row = []
 
-        for column in range(gridSize):
+        for column in range(4):
             board_row.append(" ")
 
         battleBoard.append(board_row)
     return battleBoard
     
-def display_board(board, gridSize):
+def display_board(board):
     print()
     print("    A      B      C      D")
 
-    for row in range(gridSize):
+    for row in range(4):
         print(" +-----+-----+-----+-----+")
 
         print(row +1, end=" ")
 
-        for column in range(gridSize):
+        for column in range(4):
             print("|", end="")
             print(f"{board[row][column]:^5}", end="")
 
@@ -73,10 +67,6 @@ def checkLo (location):
         
 
 if __name__=="__main__":
-    while True:
-        try:
-            
-    
     print ("---- Battle Ship 1.0 ----")
     print ("")
     
@@ -85,27 +75,35 @@ if __name__=="__main__":
     game = True
 
     locationList = []
-
+  
     shiprow = 0
     shipcol = 0
     shiprow = random.randint(1,4)
     shipcol = random.randint(1,4)
-    shiplocation = []
-    shiplocation.append(shiprow-1)
-    shiplocation.append(shipcol-1)
 
-    # if battleBoard[shipcol-1][shiprow-1] == " ":
-    #     battleBoard[shipcol-1][shiprow-1] = "ship"
+    if battleBoard[shipcol-1][shiprow-1] == " ":
+        battleBoard[shipcol-1][shiprow-1] = "ship"
     
+    
+    gamecount = 0
     while game:
-        location = (input("Choose where you want to fire (Example A,1): "))
-        locationList.append(location)
-        checkLo (location)
-        row, col = convertLo(location)
-        
-        if [row,col] == shiplocation:
-            print ("you win")
-            game = False
-        else: 
-            battleBoard[row][col] = "x"
-            display_board(battleBoard)
+        if gamecount > 5:
+            location = (input("Choose where you want to fire (Example A,1): "))
+            locationList.append(location)
+            checkLo (location)
+            row, col = convertLo(location)
+            
+            if battleBoard[row][col] == "ship":
+                print ("you win")
+                game = False
+            else: 
+                battleBoard[row][col] = "x"
+                continue
+                gamecount += 1
+        else:
+                game = False 
+                print("Ran out of guesses")
+
+
+
+

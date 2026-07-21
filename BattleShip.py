@@ -173,7 +173,8 @@ if __name__=="__main__":
     
     
     gamecount = 0
-    while game:
+    while game:  #ismorethan
+     if gamecount > 5:
         location = (input("Choose where you want to fire (Example A,1): "))
         locationList.append(location)
         checkLo (location)
@@ -185,3 +186,8 @@ if __name__=="__main__":
         else: 
             battleBoard[row][col] = "x"
             display_board(battleBoard)
+            continue
+            gamecount +=1
+    else:
+                game = False 
+                print("Ran out of guesses")

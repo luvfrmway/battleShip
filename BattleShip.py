@@ -1,6 +1,6 @@
 import random
 
-
+#creates board for game
 def create_board(gridSize):
     battleBoard = []
 
@@ -14,8 +14,9 @@ def create_board(gridSize):
         battleBoard.append(board_row)
     return battleBoard
     
+#displays the board we created in a format
 def display_board(battleBoard, gridSize):
-    print()
+    print()    
     if gridSize == 4:
         print("    A      B     C     D")
     elif gridSize == 5:
@@ -31,85 +32,102 @@ def display_board(battleBoard, gridSize):
     elif gridSize == 10:
         print("    A      B     C     D     E      F      G      H      I      J")
 
+    printRow = ""
+    for r in range (gridSize):
+        printRow = printRow + "+-----"
+    printRow = printRow + "+"
+    print(printRow)
     for row in range(gridSize):
-        print(" +-----+-----+-----+-----+")
+        
+        if row > 0:
+            print(printRow)
+        print (row +1, end="")
 
-        print(row +1, end=" ")
-
-        for column in range(4):
+        for column in range(gridSize):
             print("|", end="")
-            print(f"{battleBoard[row][column]:^5}", end="")
-
+            print(f"{battleBoard[column][row]:^5}", end="")
+        
         print("|")
+
     
-    print(" +-----+-----+-----+-----+")
+
+    print(printRow)
     print()
 
     return
 
+
+#converts input given for where they think the ship is, to usable values
 def convertLo (location, ):
     columnLetter = location[0]
     row = int(location[2]) - 1
+    abcS = ["A", 'B', "C", "D", "E", "F", "G", "H", "I", "J"]
 
-    # fix to convert for boards bigger than 4
-    if columnLetter == "A":
-        column = 0
-    elif columnLetter == "B":
-        column = 1
-    elif columnLetter == "C":
-        column = 2
-    elif columnLetter == "D":
-        column = 3
-    elif columnLetter == "E":
-        column = 4
-    elif columnLetter == "F":
-        column = 5
-    else:
-        column = 3
-    return row, column
+    val = 0
+    #loop sets col to the index based on the letter
+    for letter in (abcS): 
+        if columnLetter.upper() == letter:
+            col = val
+        else:
+            val += 1
+
+    return col, row
 
 
+#validates input for location
 def checkLo (location):
     while True:
-        if len(location) == 3:
-            if location[0] in "ABCDEFGHIJ":
-                if location[1] == ",":
-                    if location[2] in "123456789":
-                        return location
-                    break
-        elif len(location) == 4:
-            if location [0] in "ABCDEFGHIJ":
-                if location[1] == ",":
-                    if location[2] == "1":
-                        if location[3] == "0":
+        
+        if int(location[2]) <= gridSize:
+            if len(location) == 3:
+                if location.upper()[0] in "ABCDEFGHIJ":
+                    if location[1] == ",":
+                        if location[2] in "123456789":
                             return location
+                        break
+            
+            elif len(location) == 4:
+                if location.upper() [0] in "ABCDEFGHIJ":
+                    if location[1] == ",":
+                        if location[2] == "1":
+                            if location[3] == "0":
+                                return location
                         break                
-        print("Invalid location. Enter A, 1 through D, 4.")
-        location = input(
-            "Choose where you want to fire (Example A,1): "
-        ).upper().replace(" "," ")
+        
+        else: 
+            print("Invalid location. Enter A, 1 through D, 4.")
+            location = input(
+                "Choose where you want to fire (Example A,1): "
+            ).upper().replace(" "," ")
 
+#validates input for placing ship
 def checkPlaceShip (placeShip, gridSize):
     while True:
-        if len(placeShip) == 3:
-            if placeShip[0] in "ABCDEFGHI":
-                if placeShip[1] == ",":
-                    if placeShip[2] in "123456789":
-                        return placeShip
-                    break
-        elif len(placeShip) == 4:
-            if placeShip [0] in "ABCDEFGHIJ":
-                if placeShip[1] == ",":
-                    if placeShip[2] == "1":
-                        if placeShip[3] == "0":
+        
+        if len(placeShip[2]) <= gridSize:
+            if len(placeShip) == 3:
+                if placeShip.upper()[0] in "ABCDEFGHI":
+                    if placeShip[1] == ",":
+                        if placeShip[2] in "123456789":
                             return placeShip
-                        break    
+                        break
+            
+            elif len(placeShip) == 4:
+                if placeShip.upper()[0] in "ABCDEFGHIJ":
+                    if placeShip[1] == ",":
+                        if placeShip[2] == "1":
+                            if placeShip[3] == "0":
+                                return placeShip
+                            break    
 
-        print(f"Invalid location. Enter A,1 through D,{gridSize}.")
-        placeShip = input(
-            "Choose where you want to fire (Example A,1): "
-        ).upper().replace(" "," ")
+        else:
+            print(f"Invalid location. Enter A,1 through D,{gridSize}.")
+            placeShip = input(
+                "Choose where you want to fire (Example A,1): "
+            ).upper().replace(" "," ")
 
+
+# converts input into usable information for checks
 def convertPlaceShip (placeShip):
     columnLetter = placeShip[0]
     r = int(placeShip[2]) - 1
@@ -132,6 +150,8 @@ if __name__=="__main__":
     while True:
         try: 
             gridSize = int(input("Enter the size of your board. (Ex. 1-10): "))
+            if gridSize < 4 or gridSize > 10:
+                print ("Invalid input. Try again.") 
             break
         except(ValueError):
             print ("Invalid input, try again.")
@@ -198,31 +218,39 @@ if __name__=="__main__":
     gamecount = 0
     while game:  #ismorethan
         if gamecount <= 5:
-            location = (input("Choose where you want to fire (Example A,1): "))
+            while True:
+                try:
+                    location = (input("Choose where you want to fire (Example A,1): "))
+                    if len(location) < 3 or len(location) > 3:
+                        print ("Invalid input. Try again.")
+                    else:
+                        break
+                except:
+                    print ("Invalid input. Try again.")
             locationList.append(location)
             checkLo (location)
-            row, col = convertLo(location)
+            col, row = convertLo(location)
             
             if len(ships) == 1:
-                if [row,col] == ships:
+                if [col, row] == ships:
                     print ("You hit. GOod job!")
                     print ("You won!")
                     game = False
                 else: 
-                    battleBoard[row][col] = "x"
+                    battleBoard[col][row] = "x"
                     display_board(battleBoard, gridSize)
                     gamecount += 1
 
             elif len(ships) > 1:
                 for ship in (ships):
-                    if [row,col] == ship:
+                    if [col, row] == ship:
                         print ("You hit a ship. GOod job!")
-                        battleBoard[row][col] = "HIT!"
+                        battleBoard[col][row] = "HIT!"
                         ships.remove(ship)
                         gamecount += 1
                     
                     else: 
-                        battleBoard[row][col] = "x"
+                        battleBoard[col][row] = "x"
                 
                 display_board(battleBoard,gridSize)
                 gamecount +=1

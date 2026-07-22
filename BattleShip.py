@@ -1,9 +1,9 @@
 import random
 
 #creates board for game
-def create_board(gridSize):
-    battleBoard = []
-
+def createPlayerBoard(gridSize):
+    playerBoard = []
+    enemyBoard = []
 
     for row in range(gridSize):
         board_row = []
@@ -11,48 +11,64 @@ def create_board(gridSize):
         for column in range(gridSize):
             board_row.append(" ")
 
-        battleBoard.append(board_row)
-    return battleBoard
+        enemyBoard.append(board_row)
     
-#displays the board we created in a format
-def display_board(battleBoard, gridSize):
-    print()    
-    if gridSize == 4:
-        print("    A      B     C     D")
-    elif gridSize == 5:
-        print("    A      B     C     D     E")
-    elif gridSize == 6:
-        print("    A      B     C     D     E      F")
-    elif gridSize == 7:
-        print("    A      B     C     D     E      F      G")
-    elif gridSize == 8:
-        print("    A      B     C     D     E      F      G      H")
-    elif gridSize == 9:
-        print("    A      B     C     D     E      F      G      H      I")
-    elif gridSize == 10:
-        print("    A      B     C     D     E      F      G      H      I      J")
+    for row in range (gridSize):
+        board_row = []
 
-    printRow = ""
-    for r in range (gridSize):
-        printRow = printRow + "+-----"
-    printRow = printRow + "+"
-    print(printRow)
-    for row in range(gridSize):
-        
-        if row > 0:
-            print(printRow)
-        print (row +1, end="")
+        for column in range (gridSize):
+            board_row.append(" ")
 
-        for column in range(gridSize):
-            print("|", end="")
-            print(f"{battleBoard[column][row]:^5}", end="")
-        
-        print("|")
-
+        playerBoard.append(board_row)
+    return playerBoard, enemyBoard
     
 
-    print(printRow)
+    
+#displays player board we created in a format
+def displayPlayerboard(playerBoard, enemyBoard, gridSize):
     print()
+    for x in range (2):
+        for s in range (2):
+            print ("")
+        board = None
+        if x == 0:
+            print ("Player's Board")
+            board = playerBoard
+        else: 
+            print ("Enemy's Board")
+            board = enemyBoard
+        alphabet = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"]
+        needed = "   "
+        index = 0
+        for g in alphabet:
+            if index >= gridSize:
+                break
+            else:
+                needed = needed + g + "     "
+                index += 1
+        print(needed)        
+
+        printRow = ""
+        for r in range (gridSize):
+            printRow = printRow + "+-----"
+        printRow = printRow + "+"
+        print(printRow)
+        for row in range(gridSize):
+            
+            if row > 0:
+                print(printRow)
+            print (row +1, end="")
+
+            for column in range(gridSize):
+                print("|", end="")
+                print(f"{board[column][row]:^5}", end="")
+            
+            print("|")
+
+        
+
+        print(printRow)
+        print()
 
     return
 
@@ -144,7 +160,7 @@ def convertPlaceShip (placeShip):
         
 
 if __name__=="__main__":
-    print ("---- Battle Ship 1.1 ----")
+    print ("---- Battle Ship 1.2 ----")
     print ("")
     
     while True:
@@ -157,8 +173,9 @@ if __name__=="__main__":
             print ("Invalid input, try again.")
     print ("")
 
-    battleBoard = create_board(gridSize)
-    display_board(battleBoard,gridSize)
+    playerBoard, enemyBoard = createPlayerBoard(gridSize)
+
+    displayPlayerboard(playerBoard,enemyBoard,gridSize)
     game = True
 
 
@@ -172,51 +189,65 @@ if __name__=="__main__":
         except:
             print ("Invalid input. Try again!")
     
-    shipAmount = gridSize//2
+    # shipAmount = gridSize//2
+    shipAmount = 1
 
-    locationList = []
-    ships = []
-    if shipChoice.lower() == "r":
-        for x in range (shipAmount):
-            shiplocation = []
-            shiprow = 0
-            shipcol = 0
-            shiprow = random.randint(1,gridSize)
-            shipcol = random.randint(1,gridSize)
-            shiplocation.append(shipcol-1)
-            shiplocation.append(shiprow-1)
-            ships.append(shiplocation)
-    elif shipChoice.lower() == "m":
-        
-        for x in range (shipAmount):
-            shiplocation = []
-            while True:
-                placeShip = input("Choose where you want to place ship (Ex. A,1)")
-                checkPlaceShip(placeShip, gridSize)
-                r, c = convertPlaceShip(placeShip)
-                break
-            if len(shiplocation) >= 1:
+    
+    playerships = []
+    enemyships = []
+    for board in range (2):    
+        if shipChoice.lower() == "r":
+            for x in range (shipAmount):
+                shiplocation = []
+                shiprow = 0
+                shipcol = 0
+                shiprow = random.randint(1,gridSize)
+                shipcol = random.randint(1,gridSize)
+                shiplocation.append(shipcol-1)
+                shiplocation.append(shiprow-1)
+                if board == 0:
+                    playerships.append(shiplocation)
+                    playerBoard[shipcol-1][shiprow-1] = "SHIP"
+                else:
+                    enemyships.append(shiplocation)
+        elif shipChoice.lower() == "m":
+            
+            for x in range (shipAmount):
+                shiplocation = []
+                while True:
+                    placeShip = input("Choose where you want to place ship (Ex. A,1)")
+                    checkPlaceShip(placeShip, gridSize)
+                    r, c = convertPlaceShip(placeShip)
+                    break
+                if len(shiplocation) >= 1:
 
-                for x in (shiplocation):
-                    if r != x :
-                        for d in (shiplocation):
-                            if c != d:
-                                shiplocation.append(placeShip)
-                    else:
-                        print ("Ship has already been placed here. Try again!")
-                        shipAmount += 1
-                        continue
-            else:
-                shiplocation.append(c)
-                shiplocation.append(r)
-            ships.append(shiplocation)
-        
-    # if battleBoard[shipcol-1][shiprow-1] == " ":
-    #     battleBoard[shipcol-1][shiprow-1] = "ship"
+                    for x in (shiplocation):
+                        if r != x :
+                            for d in (shiplocation):
+                                if c != d:
+                                    shiplocation.append(placeShip)
+                        else:
+                            print ("Ship has already been placed here. Try again!")
+                            shipAmount += 1
+                            continue
+                else:
+                    shiplocation.append(c)
+                    shiplocation.append(r)
+                if board == 0:
+                    playerships.append(shiplocation)
+                else:
+                    enemyships.append(shiplocation)
+
     
+
+    # if playerBoard[shipcol-1][shiprow-1] == " ":
+    #     playerBoard[shipcol-1][shiprow-1] = "ship"
     
+    playerGuess = []
+    enemyGuess = []
     gamecount = 0
     while game:  #ismorethan
+        
         if gamecount <= 5:
             while True:
                 try:
@@ -227,34 +258,59 @@ if __name__=="__main__":
                         break
                 except:
                     print ("Invalid input. Try again.")
-            locationList.append(location)
+            playerGuess.append(location)
             checkLo (location)
             col, row = convertLo(location)
             
-            if len(ships) == 1:
-                if [col, row] == ships:
+            if len(playerships) == 1:
+                if [col, row] == playerships:
                     print ("You hit. GOod job!")
                     print ("You won!")
                     game = False
                 else: 
-                    battleBoard[col][row] = "x"
-                    display_board(battleBoard, gridSize)
+                    enemyBoard[col][row] = "x"
                     gamecount += 1
 
-            elif len(ships) > 1:
-                for ship in (ships):
+            elif len(playerships) > 1:
+                for ship in (playerships):
                     if [col, row] == ship:
                         print ("You hit a ship. GOod job!")
-                        battleBoard[col][row] = "HIT!"
-                        ships.remove(ship)
+                        enemyBoard[col][row] = "HIT!"
+                        playerships.remove(ship)
                         gamecount += 1
                     
                     else: 
-                        battleBoard[col][row] = "x"
+                        enemyBoard[col][row] = "x"
                 
-                display_board(battleBoard,gridSize)
-                gamecount +=1
                 
+                
+
+            CPUrow = 0
+            CPUcol = 0
+            CPUrow = random.randint(1,gridSize)
+            CPUcol = random.randint(1,gridSize)
+
+            if len(playerships) == 1:
+                if [CPUcol, CPUrow] == playerships:
+                    print ("You hit. GOod job!")
+                    print ("You won!")
+                    game = False
+                else: 
+                    playerBoard[CPUcol][CPUrow] = "x"
+                    gamecount += 1
+
+            elif len(playerships) > 1:
+                for ship in (playerships):
+                    if [col, row] == ship:
+                        print ("You hit a ship. GOod job!")
+                        playerBoard[col][row] = "HIT!"
+                        playerships.remove(ship)
+                        gamecount += 1
+                
+                    else: 
+                        playerBoard[col][row] = "x"
+            displayPlayerboard(playerBoard, enemyBoard, gridSize)
+            gamecount+=1
         else:
                     game = False 
                     print("Ran out of guesses, You Lose.")

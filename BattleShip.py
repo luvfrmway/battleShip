@@ -189,8 +189,7 @@ if __name__=="__main__":
         except:
             print ("Invalid input. Try again!")
     
-    # shipAmount = gridSize//2
-    shipAmount = 1
+    shipAmount = gridSize//2
 
     
     playerships = []
@@ -249,68 +248,72 @@ if __name__=="__main__":
     while game:  #ismorethan
         
         if gamecount <= 5:
-            while True:
-                try:
-                    location = (input("Choose where you want to fire (Example A,1): "))
-                    if len(location) < 3 or len(location) > 3:
+            for ship in range (shipAmount):    
+                enemyg = []
+                while True:
+                    try:
+                        location = (input("Choose where you want to fire (Example A,1): "))
+                        if len(location) < 3 or len(location) > 3:
+                            print ("Invalid input. Try again.")
+                        else:
+                            break
+                    except:
                         print ("Invalid input. Try again.")
-                    else:
-                        break
-                except:
-                    print ("Invalid input. Try again.")
-            playerGuess.append(location)
-            checkLo (location)
-            col, row = convertLo(location)
-            
-            if len(playerships) == 1:
-                if [col, row] == playerships:
-                    print ("You hit. GOod job!")
-                    print ("You won!")
-                    game = False
-                else: 
-                    enemyBoard[col][row] = "x"
-                    gamecount += 1
-
-            elif len(playerships) > 1:
-                for ship in (playerships):
-                    if [col, row] == ship:
-                        print ("You hit a ship. GOod job!")
-                        enemyBoard[col][row] = "HIT!"
-                        playerships.remove(ship)
-                        gamecount += 1
-                    
+                playerGuess.append(location)
+                checkLo (location)
+                col, row = convertLo(location)
+                
+                if len(enemyships) == 1:
+                    if [col, row] == enemyships:
+                        print ("You hit. GOod job!")
+                        print ("You won!")
+                        game = False
                     else: 
                         enemyBoard[col][row] = "x"
-                
-                
-                
+                        
 
-            CPUrow = 0
-            CPUcol = 0
-            CPUrow = random.randint(1,gridSize)
-            CPUcol = random.randint(1,gridSize)
+                elif len(playerships) > 1:
+                    for ship in (enemyships):
+                        if [col, row] == ship:
+                            print ("You hit a ship. GOod job!")
+                            enemyBoard[col][row] = "HIT!"
+                            enemyships.remove(ship)
+                        
+                        else: 
+                            enemyBoard[col][row] = "x"
+                    
+                    
+                    
 
-            if len(playerships) == 1:
-                if [CPUcol, CPUrow] == playerships:
-                    print ("You hit. GOod job!")
-                    print ("You won!")
-                    game = False
-                else: 
-                    playerBoard[CPUcol][CPUrow] = "x"
-                    gamecount += 1
+            
+                CPUrow = 0
+                CPUcol = 0
+                CPUrow = random.randint(1,gridSize)
+                CPUcol = random.randint(1,gridSize)
+                enemyg.append(CPUcol-1)
+                enemyg.append(CPUrow-1)
 
-            elif len(playerships) > 1:
-                for ship in (playerships):
-                    if [col, row] == ship:
-                        print ("You hit a ship. GOod job!")
-                        playerBoard[col][row] = "HIT!"
-                        playerships.remove(ship)
-                        gamecount += 1
-                
+                if len(playerships) == 1:
+                    if [CPUcol, CPUrow] == playerships:
+                        print ("You hit. GOod job!")
+                        print ("You won!")
+                        game = False
                     else: 
-                        playerBoard[col][row] = "x"
-            displayPlayerboard(playerBoard, enemyBoard, gridSize)
-            gamecount+=1
+                        playerBoard[CPUcol-1][CPUrow-1] = "x"
+                        
+
+                elif len(playerships) > 1:
+                    for ship in (playerships):
+                        if [CPUcol-1, CPUrow-1] == ship:
+                            print ("You hit a ship. GOod job!")
+                            playerBoard[col][row] = "HIT!"
+                            playerships.remove(ship)
+                            
+                    
+                        else: 
+                            playerBoard[col][row] = "x"
+                displayPlayerboard(playerBoard, enemyBoard, gridSize)
+                gamecount+=1
         else:
                     game = False 
                     print("Ran out of guesses, You Lose.")
